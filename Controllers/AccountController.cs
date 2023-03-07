@@ -2,7 +2,6 @@
 using AccountManagementAPI.Models;
 using AccountManagementAPI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
 
 namespace AccountManagementAPI.Controllers
 {
@@ -22,9 +21,10 @@ namespace AccountManagementAPI.Controllers
         public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {
             var accounts = await _managementService.GetAccounts();
+
             if (accounts == null) 
             {
-                throw new NotFoundException($"No account were found");
+                throw new NotFoundException($"No accounts were found");
             }
 
             return Ok(accounts);
