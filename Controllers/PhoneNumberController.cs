@@ -16,10 +16,11 @@ namespace AccountManagementAPI.Controllers
             _managementService = managementService;
         }
 
-        [HttpGet("accountId")]
+        [HttpGet("account/{accountId}")]
         public async Task<ActionResult<IEnumerable<PhoneNumber>>> GetPhoneNumbersByAccountId(int accountId)
         {
             var phoneNumbers = await _managementService.GetPhoneNumbersByAccountId(accountId);
+
             if (phoneNumbers.Count == 0)
             {
                 throw new NotFoundException($"No phone numbers were found by account id : {accountId}");
@@ -61,12 +62,12 @@ namespace AccountManagementAPI.Controllers
 
             if (account == null)
             {
-                throw new NotFoundException($"Account with id : {phoneNumber.AccountId} isn't found");
+                throw new NotFoundException($"Account with id : {phoneNumber.AccountId} wasn't found");
             }
             
             if (phoneNumberToAssignTo == null)
             {
-                throw new NotFoundException($"Phone number with id : {phoneNumber.Id} isn't found");
+                throw new NotFoundException($"Phone number with id : {phoneNumber.Id} wasn't found");
             }
 
             if (!account.IsActive)
