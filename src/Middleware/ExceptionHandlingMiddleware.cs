@@ -43,7 +43,7 @@ namespace AccountManagementAPI.Middleware
                     errorDetails.Message = e.Message;
                     break;
                 
-                case KeyNotFoundException e:
+                case NotFoundException e:
                     errorDetails.StatusCode = (int)HttpStatusCode.NotFound;
                     break;
 
