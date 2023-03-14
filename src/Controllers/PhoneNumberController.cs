@@ -29,7 +29,7 @@ namespace AccountManagementAPI.Controllers
             return Ok(phoneNumbers);
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePhoneNumber(int id)
         {
             var phoneNumber = await _managementService.GetPhoneNumber(id);
@@ -49,7 +49,7 @@ namespace AccountManagementAPI.Controllers
             return NoContent();
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> AssignPhoneNumberToAccount(int id, [FromBody]PhoneNumber phoneNumber)
         {
             if (id != phoneNumber.Id)
@@ -58,28 +58,22 @@ namespace AccountManagementAPI.Controllers
             }
 
             var account = await _managementService.GetAccount(phoneNumber.AccountId);
-            var phoneNumberToAssignTo = await _managementService.GetPhoneNumber(phoneNumber.Id);
 
             if (account == null)
             {
                 throw new NotFoundException($"Account with id : {phoneNumber.AccountId} wasn't found");
             }
-            
-            if (phoneNumberToAssignTo == null)
-            {
-                throw new NotFoundException($"Phone number with id : {phoneNumber.Id} wasn't found");
-            }
 
             if (!account.IsActive)
             {
-                throw new AccountManagementAPIException($"Account with id : {id} is inactive");
+                throw new AccountManagementAPIException($"Account with id : {phoneNumber.AccountId} is inactive");
             }
 
-            var updatedPhoneNumber = await _managementService.AssignAccount(phoneNumberToAssignTo, account.Id);
+            var updatedPhoneNumber = await _managementService.AssignAccount(phoneNumber, account.Id);
 
             if (updatedPhoneNumber == null)
             {
-                throw new AccountManagementAPIException($"An error occured while trying to assign account id : {account.Id} to phone number with id  : {phoneNumber.Id}");
+                throw new AccountManagementAPIException($"An error occured while trying to assign account id : {account.Id} to phone number with id : {phoneNumber.Id}");
             }
             
             return NoContent();

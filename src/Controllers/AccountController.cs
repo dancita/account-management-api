@@ -43,7 +43,7 @@ namespace AccountManagementAPI.Controllers
             return CreatedAtAction(nameof(GetAccount), new { id = account.Id }, account);
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetAccount(int id)
         {
             var account = await _managementService.GetAccount(id);
@@ -56,7 +56,7 @@ namespace AccountManagementAPI.Controllers
             return Ok(account);
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> ToggleAccountState(int id)
         {
             var account = await _managementService.GetAccount(id);
