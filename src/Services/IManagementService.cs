@@ -8,7 +8,7 @@ namespace AccountManagementAPI.Services
         Task<Account?> ToggleAccountStatus(Account account);
         Task<Account?> GetAccount(int? accountId);    
         Task<Account?> AddAccount(Account account);
-        Task<ActionResult<IEnumerable<Account>>> GetAccounts();
+        Task<List<Account>> GetAccounts();
         Task<List<PhoneNumber>> GetPhoneNumbersByAccountId(int accountId);
 
         Task<PhoneNumber?> GetPhoneNumber(int? phoneNumberId);

@@ -83,7 +83,7 @@ namespace AccountManagementAPI.Services
             }
         }
 
-        public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
+        public async Task<List<Account>> GetAccounts()
         {
             return await _appDbContext.Accounts.ToListAsync();
         }

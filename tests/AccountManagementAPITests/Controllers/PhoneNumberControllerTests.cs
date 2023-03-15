@@ -33,15 +33,17 @@ namespace AccountManagementAPITests.Controllers
             // Act
             var result = await phoneNumberController.GetPhoneNumbersByAccountId(4);
 
-            //Assert
+            // Assert
             var actionResult = Assert
                 .IsType<ActionResult<IEnumerable<PhoneNumber>>>(result);
-            Assert.IsAssignableFrom<IEnumerable<PhoneNumber>>(
-                ((OkObjectResult)actionResult.Result).Value);
+            var okObjectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var phoneNumbers = Assert.IsAssignableFrom<IEnumerable<PhoneNumber>>
+                (okObjectResult.Value);
+            Assert.Single(phoneNumbers);
         }
 
         [Fact]
-        public async Task GetPhoneNumbersByAccountId_NoAccountIdAssignedToPhoneNumber_MustReturnNotFound()
+        public async Task GetPhoneNumbersByAccountId_NoAccountIdAssignedToPhoneNumber_ThrowsNotFoundException()
         {
             // Arrange
             _managementService.Setup(x => x.GetPhoneNumbersByAccountId(3))
@@ -51,7 +53,7 @@ namespace AccountManagementAPITests.Controllers
             // Act
             var ex = await Assert.ThrowsAsync<NotFoundException>(() => phoneNumberController.GetPhoneNumbersByAccountId(3));
 
-            //Assert
+            // Assert
             ex.Message.ShouldBe("No phone numbers were found by account id : 3");
         }
 
@@ -74,24 +76,24 @@ namespace AccountManagementAPITests.Controllers
             // Act
             var result = await phoneNumberController.DeletePhoneNumber(2);
 
-            //Assert
+            // Assert
             Assert.IsAssignableFrom<NoContentResult>(result);
         }
 
         [Fact]
-        public async Task DeletePhoneNumber_InvalidId_MustThrowNotFound()
+        public async Task DeletePhoneNumber_InvalidId_ThrowsNotFoundException()
         {
             var phoneNumberController = new PhoneNumberController(_managementService.Object);
 
             // Act
             var ex = await Assert.ThrowsAsync<NotFoundException>(() => phoneNumberController.DeletePhoneNumber(1));
 
-            //Assert
+            // Assert
             ex.Message.ShouldBe("Phone number wasn't found for account id : 1");
         }
 
         [Fact]
-        public async Task DeletePhoneNumber_UnsuccessfulDelete_MustThrowAccountManagementAPIException()
+        public async Task DeletePhoneNumber_UnsuccessfulDelete_ThrowsAccountManagementAPIException()
         {
             var phoneNumber = new PhoneNumber()
             {
@@ -109,7 +111,7 @@ namespace AccountManagementAPITests.Controllers
             // Act
             var ex = await Assert.ThrowsAsync<AccountManagementAPIException>(() => phoneNumberController.DeletePhoneNumber(2));
 
-            //Assert
+            // Assert
             ex.Message.ShouldBe("An error occured while trying to delete phone number with id : 2");
         }
 
@@ -143,7 +145,7 @@ namespace AccountManagementAPITests.Controllers
             // Act
             var result = await phoneNumberController.AssignPhoneNumberToAccount(2, phoneNumber);
 
-            //Assert
+            // Assert
             Assert.IsAssignableFrom<NoContentResult>(result);
         }
 
@@ -163,7 +165,7 @@ namespace AccountManagementAPITests.Controllers
             // Act
             var ex = await Assert.ThrowsAsync<BadRequestException>(() => phoneNumberController.AssignPhoneNumberToAccount(5, phoneNumber));
 
-            //Assert
+            // Assert
             ex.Message.ShouldBe("Id given in parameter : 5 must match id given in body: 2");
         }
 
@@ -183,7 +185,7 @@ namespace AccountManagementAPITests.Controllers
             // Act
             var ex = await Assert.ThrowsAsync<NotFoundException>(() => phoneNumberController.AssignPhoneNumberToAccount(2, phoneNumber));
 
-            //Assert
+            // Assert
             ex.Message.ShouldBe("Account with id : 12 wasn't found");
         }
 
@@ -209,8 +211,8 @@ namespace AccountManagementAPITests.Controllers
 
             // Act
             var ex = await Assert.ThrowsAsync<AccountManagementAPIException>(() => phoneNumberController.AssignPhoneNumberToAccount(2, phoneNumber));
-
-            //Assert
+             
+            // Assert
             ex.Message.ShouldBe("Account with id : 12 is inactive");
         }
 
@@ -237,7 +239,7 @@ namespace AccountManagementAPITests.Controllers
             // Act
             var ex = await Assert.ThrowsAsync<AccountManagementAPIException>(() => phoneNumberController.AssignPhoneNumberToAccount(2, phoneNumber));
 
-            //Assert
+            // Assert
             ex.Message.ShouldBe("An error occured while trying to assign account id : 12 to phone number with id : 2");
         }
     }
