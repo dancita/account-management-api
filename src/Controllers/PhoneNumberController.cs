@@ -16,6 +16,12 @@ namespace AccountManagementAPI.Controllers
             _managementService = managementService;
         }
 
+        /// <summary>
+        /// Retrieves specific phone numbers by the account id they assigned to
+        /// </summary>
+        /// <param name="accountId">The assigned account id of the phone numbers to retrieve</param>
+        /// <returns>A list of the phone numbers assigned to a specific account id</returns>
+        /// <exception cref="NotFoundException"></exception>
         [HttpGet("account/{accountId}")]
         public async Task<ActionResult<IEnumerable<PhoneNumber>>> GetPhoneNumbersByAccountId(int accountId)
         {
@@ -29,6 +35,13 @@ namespace AccountManagementAPI.Controllers
             return Ok(phoneNumbers);
         }
 
+        /// <summary>
+        /// Deletes a phone number from the database
+        /// </summary>
+        /// <param name="id">The id of the phonenumber to delete</param>
+        /// <returns></returns>
+        /// <exception cref="NotFoundException"></exception>
+        /// <exception cref="AccountManagementAPIException"></exception>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePhoneNumber(int id)
         {
@@ -49,6 +62,15 @@ namespace AccountManagementAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Updates an existing phone number in the database with a new assinged account
+        /// </summary>
+        /// <param name="id">The id of the phone number to update</param>
+        /// <param name="phoneNumber">The updated phone number</param>
+        /// <returns></returns>
+        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="NotFoundException"></exception>
+        /// <exception cref="AccountManagementAPIException"></exception>
         [HttpPut("{id}")]
         public async Task<IActionResult> AssignPhoneNumberToAccount(int id, [FromBody]PhoneNumber phoneNumber)
         {

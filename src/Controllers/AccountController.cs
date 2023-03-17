@@ -16,6 +16,11 @@ namespace AccountManagementAPI.Controllers
             _managementService = managementService;
         }
 
+        /// <summary>
+        /// Retrieves all accounts
+        /// </summary>
+        /// <returns>A list of all accounts</returns>
+        /// <exception cref="NotFoundException"></exception>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {
@@ -29,6 +34,12 @@ namespace AccountManagementAPI.Controllers
             return Ok(accounts);
         }
 
+        /// <summary>
+        /// Adds a new account to the database
+        /// </summary>
+        /// <param name="account">The account to add</param>
+        /// <returns>The newly added account</returns>
+        /// <exception cref="AccountManagementAPIException"></exception>
         [HttpPost]
         public async Task<ActionResult<Account>> AddAccount(Account account)
         {
@@ -42,6 +53,12 @@ namespace AccountManagementAPI.Controllers
             return CreatedAtAction(nameof(GetAccount), new { id = account.Id }, account);
         }
 
+        /// <summary>
+        /// Retrieves a specific by id
+        /// </summary>
+        /// <param name="id">The id of the account to retrieve</param>
+        /// <returns>The retrieved account by the specified id</returns>
+        /// <exception cref="AccountManagementAPIException"></exception>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAccount(int id)
         {
@@ -55,6 +72,13 @@ namespace AccountManagementAPI.Controllers
             return Ok(account);
         }
 
+        /// <summary>
+        /// Toggles the state of an existing account (between active and suspended)
+        /// </summary>
+        /// <param name="id">The id of the account to toggle the status</param>
+        /// <returns></returns>
+        /// <exception cref="NotFoundException"></exception>
+        /// <exception cref="AccountManagementAPIException"></exception>
         [HttpPut("{id}")]
         public async Task<IActionResult> ToggleAccountState(int id)
         {
