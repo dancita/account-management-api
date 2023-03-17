@@ -16,7 +16,6 @@ namespace AccountManagementAPI.Controllers
             _managementService = managementService;
         }
 
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {

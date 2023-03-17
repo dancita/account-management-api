@@ -60,13 +60,13 @@ namespace AccountManagementAPITests.Controllers
         [Fact]
         public async Task DeletePhoneNumber_ValidId_MustReturnNoContent()
         {
+            // Arrange
             var phoneNumber = new PhoneNumber()
             {
                 AccountId = 1,
                 Id = 2,
                 Number = "555-4321"
             };
-            // Arrange
             _managementService.Setup(x => x.GetPhoneNumber(2)).ReturnsAsync(phoneNumber);
 
             _managementService.Setup(x => x.DeletePhoneNumber(phoneNumber)).ReturnsAsync(true);
@@ -83,6 +83,7 @@ namespace AccountManagementAPITests.Controllers
         [Fact]
         public async Task DeletePhoneNumber_InvalidId_ThrowsNotFoundException()
         {
+            // Arrange
             var phoneNumberController = new PhoneNumberController(_managementService.Object);
 
             // Act
@@ -95,13 +96,13 @@ namespace AccountManagementAPITests.Controllers
         [Fact]
         public async Task DeletePhoneNumber_UnsuccessfulDelete_ThrowsAccountManagementAPIException()
         {
+            // Arrange
             var phoneNumber = new PhoneNumber()
             {
                 AccountId = 1,
                 Id = 2,
                 Number = "555-4321"
             };
-            // Arrange
             _managementService.Setup(x => x.GetPhoneNumber(2)).ReturnsAsync(phoneNumber);
 
             _managementService.Setup(x => x.DeletePhoneNumber(phoneNumber)).ReturnsAsync(false);

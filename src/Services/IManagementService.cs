@@ -1,5 +1,4 @@
 ﻿using AccountManagementAPI.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace AccountManagementAPI.Services
 {

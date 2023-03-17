@@ -146,5 +146,64 @@ namespace AccountManagementAPITests.Controllers
             // Assert
             ex.Message.ShouldBe("An error occured while trying to get an account by id : 5");
         }
+
+        [Fact]
+        public async Task ToggleAccountState_Successful_MustReturnNoContent()
+        {
+            // Arrange
+            var testAccount = new Account()
+            {
+                Id = 5,
+                AccountHolderName = "Test Account Holder",
+                IsActive = true
+            };
+            _managementService.Setup(x => x.GetAccount(5)).ReturnsAsync(testAccount);
+            _managementService.Setup(x => x.ToggleAccountStatus(testAccount)).ReturnsAsync(new Account()
+            {
+                Id = 5,
+                AccountHolderName = "Test Account Holder",
+                IsActive = false
+            });
+            var accountController = new AccountController(_managementService.Object);
+
+            // Act
+            var result = await accountController.ToggleAccountState(5);
+
+            // Assert
+            Assert.IsAssignableFrom<NoContentResult>(result);
+        }
+
+        [Fact]
+        public async Task ToggleAccountState_InvalidId_ThrowsNotFoundException()
+        {
+            // Arrange
+            var accountController = new AccountController(_managementService.Object);
+
+            // Act
+            var ex = await Assert.ThrowsAsync<NotFoundException>(() => accountController.ToggleAccountState(6));
+
+            // Assert
+            ex.Message.ShouldBe("Account wasn't found with id : 6");
+        }
+
+        [Fact]
+        public async Task ToggleAccountState_ValidIdUnsuccessfulUpdate_ThrowsAccountManagementAPIException()
+        {
+            // Arrange
+            var testAccount = new Account()
+            {
+                Id = 5,
+                AccountHolderName = "Test Account Holder",
+                IsActive = true
+            };
+            _managementService.Setup(x => x.GetAccount(5)).ReturnsAsync(testAccount);
+            var accountController = new AccountController(_managementService.Object);
+
+            // Act
+            var ex = await Assert.ThrowsAsync<AccountManagementAPIException>(() => accountController.ToggleAccountState(5));
+
+            // Assert
+            ex.Message.ShouldBe("An error occured while toggling the account status");
+        }
     }
 }
