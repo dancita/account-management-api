@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountManagementAPI", "src\AccountManagementAPI.csproj", "{2C887D8A-0552-4982-BDBE-4E7A2F64C537}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountManagementAPITests", "tests\AccountManagementAPITests\AccountManagementAPITests.csproj", "{8E4AAD54-53D5-4303-9924-B7E83B54719A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountManagementAPI.Tests", "tests\AccountManagementAPITests\AccountManagementAPI.Tests.csproj", "{8E4AAD54-53D5-4303-9924-B7E83B54719A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
